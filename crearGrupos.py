@@ -8,41 +8,36 @@ import time
 
 def CrearGrupoDeWhatsapp(groupName,wait,chrome):
         
+    #Click Boton de 3 puntos
     x_menuButton = '//div[@title="Menú"]'
     menuButton = wait.until(ec.presence_of_element_located((By.XPATH, x_menuButton)))
     menuButton.click()
 
 
-
+    #Click en Boton "Nuevo Grupo"
     x_newGroup = '//*[@id="side"]/header/div[2]/div/span/div[3]/span/div[1]/ul/li[1]/div[1]'
     newGroup = wait.until(ec.presence_of_element_located((By.XPATH, x_newGroup)))
     newGroup.click()
 
 
-
+    #Ingresa nombre en el 'TextBox' de buscar contactos
     x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/div[1]/div/div/input'
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
     nameField.send_keys('a_Yo')
     nameField.send_keys(Keys.ENTER)
 
 
-
+    #Click en añadir Contacto
     x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/span/div/span'
     buttonSaveContact = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
     buttonSaveContact.click()
 
 
 
-
+    #Añade nombre del grupo y lo Crea
     x_group = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]'
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_group)))
     nameField.send_keys(groupName + Keys.ENTER)
-
-
-
-    # x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/span/div/div/span'
-    # buttonSaveGroup = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
-    # buttonSaveGroup.click()
 
     time.sleep(10)
 
@@ -70,10 +65,9 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome):
     buttonEnlaceInvitacio.click()
 
     time.sleep(3)
-    #
+    
+    #Copia el Enlace de invitacion del grupo
     link = chrome.find_element_by_xpath('//*[@id="group-invite-link-anchor"]')
     print(link.get_attribute("href"))
-
     retornarlink = link.get_attribute("href")
-
     return retornarlink
