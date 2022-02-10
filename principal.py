@@ -31,7 +31,7 @@ class principal:
         arreglo = extraerDatosDelExcel(cantidad_de_filas)
         nombreDelGrupo = arreglo[contador]
         #CreandoGrupo
-        obtenerEnlace = CrearGrupoDeWhatsapp(str(nombreDelGrupo),wait,chrome)
+        obtenerEnlace = CrearGrupoDeWhatsapp(str(nombreDelGrupo),wait,chrome,contador)
         time.sleep(1)
         #insertar enlace y nombre a excel
         insertarDatosDelExcel(nombreDelGrupo,obtenerEnlace,contador2)
