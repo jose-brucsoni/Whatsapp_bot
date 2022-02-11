@@ -18,22 +18,21 @@ class principal:
 
     chrome.get('https://web.whatsapp.com/')
 
-    cantidad_de_filas = 39
     contador = -1
-    contador2 = 1
+    arreglo = extraerDatosDelExcel()
 
 
-    for i in range(cantidad_de_filas):
+    for i in arreglo:
 
         contador += 1
 
         #obteniendo Nombre de Grupo
-        arreglo = extraerDatosDelExcel(cantidad_de_filas)
         nombreDelGrupo = arreglo[contador]
         #CreandoGrupo
         obtenerEnlace = CrearGrupoDeWhatsapp(str(nombreDelGrupo),wait,chrome,contador)
         time.sleep(1)
         #insertar enlace y nombre a excel
-        insertarDatosDelExcel(nombreDelGrupo,obtenerEnlace,contador2)
-        contador2 += 1
+        insertarDatosDelExcel(nombreDelGrupo,obtenerEnlace,contador)
+        time.sleep(60)
+
         

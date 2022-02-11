@@ -24,7 +24,7 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
     #Ingresa nombre en el 'TextBox' de buscar contactos
     x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/div[1]/div/div/input'
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
-    nameField.send_keys('a_Yo')
+    nameField.send_keys('Joel Godoy') #Ingresar el nombre del contacto
     nameField.send_keys(Keys.ENTER)
 
 

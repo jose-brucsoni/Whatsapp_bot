@@ -12,9 +12,9 @@ ws = wb['Hoja1']
 def insertarDatosDelExcel(nombre,link,cont2):
     
     #Rango de la tabla
-    cell_range = ws['A1':'K39']
+    cell_range = ws['J2':'K39']
     #Inserta los datos en la tabla
-    cell_range[cont2][9].value=link
-    cell_range[cont2][10].value=nombre
+    cell_range[cont2][0].value=link
+    cell_range[cont2][1].value=nombre
     #Confirma el guardado de los datos en Excel
     wb.save('Modulo 1.xlsx')
