@@ -40,6 +40,19 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_group)))
     nameField.send_keys(groupName + Keys.ENTER)
 
+    
+    x_AvisoDeBloqueo = '//*[@id="app"]/div[1]/span[1]/div/div/span'
+    AvisoDeBloqueo = wait.until(ec.presence_of_element_located((By.XPATH,x_AvisoDeBloqueo)))
+    
+    time.sleep(0.5)
+
+
+    if(AvisoDeBloqueo == True):
+        
+        print("NOS BLOQUEO WHATSAPP")
+    else:
+        print("")
+
     time.sleep(10)
 
     #Aqui empieza a enviar el enlace del grupo
