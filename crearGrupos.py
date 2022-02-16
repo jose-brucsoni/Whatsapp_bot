@@ -1,4 +1,5 @@
 import imp
+import sys
 from tkinter import N
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -6,8 +7,12 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import time
+from buscarGrupo import buscarGrupo
+from datetime import datetime
 
-def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
+def CrearGrupoDeWhatsapp(groupName,grupo,horario,siglaMateria,turno,modalidad,materia,wait,chrome,contador):
+
+        
         
     #Click Boton de 3 puntos
     x_menuButton = '//div[@title="Menú"]'
@@ -24,7 +29,7 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
     #Ingresa nombre en el 'TextBox' de buscar contactos
     x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/div[1]/div/div/input'
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
-    nameField.send_keys('Joel Godoy') #Ingresar el nombre del contacto
+    nameField.send_keys('a_Yo') #Ingresar el nombre del contacto
     nameField.send_keys(Keys.ENTER)
 
 
@@ -40,18 +45,22 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_group)))
     nameField.send_keys(groupName + Keys.ENTER)
 
-    
+
     x_AvisoDeBloqueo = '//*[@id="app"]/div[1]/span[1]/div/div/span'
     AvisoDeBloqueo = wait.until(ec.presence_of_element_located((By.XPATH,x_AvisoDeBloqueo)))
     
-    time.sleep(0.5)
+    time.sleep(1.5)
+    textoDeAviso = str(AvisoDeBloqueo.get_attribute("textContent"))
 
-
-    if(AvisoDeBloqueo == True):
+    if(textoDeAviso == "No se pudo crear el grupo. Creaste demasiados grupos en muy poco tiempo. Vuelve a intentarlo más tarde."):
         
-        print("NOS BLOQUEO WHATSAPP")
-    else:
-        print("")
+        print("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
+        print("AVISO DE WHATSAPP    "+textoDeAviso,"\n")
+        print("Se detuvo en: \n Materia:", materia ,"\n Con el contador a:", contador,"\n")
+        print("Nos bloquearon a la siguiente fecha y hora: "+ time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),"\n")
+        sys.exit("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
+        
+
 
     time.sleep(10)
 
@@ -60,28 +69,11 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
     x_nameFieldGroup = '//*[@id="side"]/div[1]/div/label/div/div[2]'
     nameFieldGroup = wait.until(ec.presence_of_element_located((By.XPATH,x_nameFieldGroup)))
     nameFieldGroup.send_keys(groupName)
-    time.sleep(5)
+    chrome.implicitly_wait(20) # da una espera implícita de 20 segundos
     x_encontrarElemento = '//*[@id="pane-side"]/div[1]/div/div/div[9]/div/div/div/div[2]/div[1]/div[1]/span'
     x_encontrarElemento.__getattribute__("title")
 
-    if(str(x_encontrarElemento) == None or str(x_encontrarElemento) == ""):
-
-        nameFieldGroup.send_keys("")
-        time.sleep(1)
-        nameFieldGroup.send_keys(groupName)
-        time.sleep(5)
-        print("Buscó ELEMENTO")
-        nameFieldGroup.send_keys(Keys.ENTER)
-
-    elif(x_encontrarElemento == groupName):
-        encontrarElemento = wait.until(ec.presence_of_element_located((By.XPATH,x_encontrarElemento)))
-        encontrarElemento.click()
-
-
-
-    nameFieldGroup.send_keys(Keys.ENTER)
-
-        
+    buscarGrupo.buscarGrupoEntextBox(x_encontrarElemento,groupName,nameFieldGroup,wait)
 
 
     #Click a Boton De 3 puntos
@@ -100,9 +92,59 @@ def CrearGrupoDeWhatsapp(groupName,wait,chrome,contador):
     buttonEnlaceInvitacio.click()
 
     time.sleep(3)
-    
+
     #Copia el Enlace de invitacion del grupo
     link = chrome.find_element_by_xpath('//*[@id="group-invite-link-anchor"]')
-    print(contador)
     retornarlink = link.get_attribute("href")
+
+    #Fase de Añadir Descripcion del Grupo
+
+
+    #click en botono para atras
+    x_botonParaAtras = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/header/div/div[1]/button'
+    botonParaAtras = wait.until(ec.presence_of_element_located((By.XPATH,x_botonParaAtras)))
+    botonParaAtras.click()
+
+    #Añadir Descripcion del Grupo
+    x_textoDeingresarDescripcion = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[2]/div[1]/div/div/div'
+    textoDeingresarDescripcion = wait.until(ec.presence_of_element_located((By.XPATH,x_textoDeingresarDescripcion)))
+    textoDeingresarDescripcion.click()
+
+    #Click en icono de lapiz de añadir descripcion
+    x_botonGuardarDescripcion = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[2]/div[1]/div/div/span[2]/button'
+    botonGuardarDescripcion = wait.until(ec.presence_of_element_located((By.XPATH,x_botonGuardarDescripcion)))
+    botonGuardarDescripcion.click()
+
+
+    x_Bienvenida = "UTEPSA - Modulo(2)"
+    x_separador = "-----------------------"
+    x_materia = "Materia: " + materia
+    x_grupo = "Grupo: " + grupo
+    x_horario = "Horario: " + horario
+    x_turno = "Turno: " + turno
+    x_modalidad = "Modalidad: " + modalidad
+    x_siglaMateria = "Sigla de Materia: " + siglaMateria
+    x_docente = "Docente: "
+    x_Enlace = "Enlace: "
+
+    #ingresar descripcion y guardar
+    x_TextBoxIngresarDescripcion = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[2]/div[1]/div/div[1]/div/div/div[2]'
+    TextBoxIngresarDescripcion = wait.until(ec.presence_of_element_located((By.XPATH,x_TextBoxIngresarDescripcion)))
+    TextBoxIngresarDescripcion.send_keys(x_Bienvenida+ (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT) + x_separador + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_materia + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_grupo + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_horario + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_turno + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_modalidad + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_siglaMateria + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_docente + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_Enlace)
+
+    TextBoxIngresarDescripcion.send_keys(Keys.ENTER)
+
+
+    #ingresar descripcion y guardar
+    x_textBoxDeChat = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[2]'
+    textBoxDeChat = wait.until(ec.presence_of_element_located((By.XPATH,x_textBoxDeChat)))
+    textBoxDeChat.send_keys(x_Bienvenida+ (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT) + x_separador + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_materia + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_grupo + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_horario + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_turno + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_modalidad + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_siglaMateria + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_docente + (Keys.LEFT_SHIFT + Keys.ENTER) + (Keys.LEFT_SHIFT)+ x_Enlace)
+
+    textBoxDeChat.send_keys(Keys.ENTER)
+
+    print("CONTEO DE PROCESOS = ",contador)
+    print("Materia = ", materia)
+    print("Grupo = ", grupo)
+    print("NombreAbreviado = ", groupName)
+
     return retornarlink
