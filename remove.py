@@ -1,22 +1,28 @@
-from cgitb import text
 from blackList import blackList
 
 class remove:
-    def abreviar(cadena, grupo):
+
+    def comprueba(cadena):
+        if (len(cadena)<23):
+            return True
+        else:
+            return False
+
+    def abreviar(cadena,grupo):
         for i in blackList.List:
             cadena = cadena.replace(i, ' ')
-
+        cadena = cadena.strip()
         cadenal = cadena.split(' ')
-        if (len(cadena)<23):
-            cadena = cadena+'_'+grupo
 
+        if (remove.comprueba(cadena)):
+            cadena == cadena.strip()
+            cadenal = cadena.replace(' ','.')+'_'+grupo
+            return cadenal
         else:
-            cont=-1
-            for a in cadenal:
-                cont+=1
-                if (len(a) > 3):
-                    cadenal[cont] = a[0:3]
-
-
-        retorna = '.'.join(cadenal)+'_'+grupo
-        return retorna
+            for x in range(0,len(cadenal)):
+                if (len(cadenal[x]) > 3):
+                    cadenal[x] = cadenal[x][0:3]
+                    if  (remove.comprueba('.'.join(cadenal))):
+                        break
+            cadenal = '.'.join(cadenal)+'_'+grupo
+        return cadenal

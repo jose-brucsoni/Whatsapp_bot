@@ -5,9 +5,6 @@ from openpyxl import load_workbook
 from remove import remove
 
 def extraerDatosDelExcel():
-    
-        
-
     #----------------------------------------------------------------------
 
     #Se Carga el archivo Excel
@@ -24,29 +21,34 @@ def extraerDatosDelExcel():
     arregloTurno = []
     arregloModalidad = []
     arregloMateriaSinAbreviar = []
+    arregloFilasDeExcel=[]
 
 
 
     for i in cell_range:
             contador += 1
-            if(i[0].value != None):
+            if(cell_range[contador][11].value == None and cell_range[contador][12].value == None):
 
-                modalidad = cell_range[contador][6].value
-                turno = cell_range[contador][5].value
-                horario = cell_range[contador][4].value
-                materia = cell_range[contador][3].value
-                siglamateria = cell_range[contador][2].value
-                grupo = cell_range[contador][1].value
+                if(i[0].value != None):
 
-                nombreAbreviado = remove.abreviar(materia, grupo)
+                    modalidad = cell_range[contador][6].value
+                    turno = cell_range[contador][5].value
+                    horario = cell_range[contador][4].value
+                    materia = cell_range[contador][3].value
+                    siglamateria = cell_range[contador][2].value
+                    grupo = cell_range[contador][1].value
 
-                arregloNombres.append(nombreAbreviado)
-                arregloGrupo.append(grupo)
-                arregloHorario.append(horario)
-                arregloSiglaMateria.append(siglamateria)
-                arregloTurno.append(turno)
-                arregloModalidad.append(modalidad)
-                arregloMateriaSinAbreviar.append(materia)
+                    nombreAbreviado = remove.abreviar(materia, grupo)
+
+                    arregloNombres.append(nombreAbreviado)
+                    arregloGrupo.append(grupo)
+                    arregloHorario.append(horario)
+                    arregloSiglaMateria.append(siglamateria)
+                    arregloTurno.append(turno)
+                    arregloModalidad.append(modalidad)
+                    arregloMateriaSinAbreviar.append(materia)
+                    arregloFilasDeExcel.append(contador)
 
 
-    return (arregloNombres,arregloGrupo,arregloHorario,arregloSiglaMateria,arregloTurno,arregloModalidad,arregloMateriaSinAbreviar)
+    return (arregloNombres,arregloGrupo,arregloHorario,arregloSiglaMateria,arregloTurno,arregloModalidad,arregloMateriaSinAbreviar,arregloFilasDeExcel)
+
