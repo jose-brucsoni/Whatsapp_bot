@@ -12,7 +12,7 @@ import time
 class principal:
 
     
-    chrome = webdriver.Chrome(executable_path='./chromedriver')
+    chrome = webdriver.Edge(executable_path='./msedgedriver')
 
     wait = WebDriverWait(chrome,600)
     chrome.implicitly_wait(20) # da una espera implícita de 20 segundos

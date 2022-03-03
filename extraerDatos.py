@@ -10,7 +10,7 @@ def extraerDatosDelExcel():
     #Selecciona la hoja dentro del excel
     ws = excel['modulo2']
     #Selecciona el rango de la tabla
-    cell_range = ws['A2':'M500']
+    cell_range = ws['A2':'P500']
     contador = -1
     arregloNombres = []
     arregloGrupo = []

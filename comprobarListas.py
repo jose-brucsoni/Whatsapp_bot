@@ -1,6 +1,4 @@
-from traceback import print_tb
 from openpyxl import load_workbook
-import time
 
 wb = load_workbook('modulo2-Completo.xlsx')
 wb2 = load_workbook('modulo2.xlsx')
@@ -37,8 +35,14 @@ for x in range(0,len(cell2)):
     
             cell[c][39].value = "ANULADO"
 
+        elif(cell[c][1].value == '2' and cell[c][28].value == "EXAMEN DE SUFICIENCIA"):
         
+            cell[c][39].value = "NO REQUIERE GRUPO"
 
+        elif(cell[c][1].value == '2' and cell[c][36].value == 'POSTGRADO'):
+            
+            cell[c][39].value = "NO REQUIERE GRUPO"
+        
             
 print(cont)
 wb.save('modulo2-Completo.xlsx')

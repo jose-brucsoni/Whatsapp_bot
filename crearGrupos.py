@@ -29,7 +29,7 @@ def CrearGrupoDeWhatsapp(groupName,grupo,horario,siglaMateria,turno,modalidad,ma
     #Ingresa nombre en el 'TextBox' de buscar contactos
     x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/div[1]/div/div/input'
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
-    nameField.send_keys('Celular 1') #Ingresar el nombre del contacto
+    nameField.send_keys('Joel Godoy') #Ingresar el nombre del contacto
     nameField.send_keys(Keys.ENTER)
 
 
@@ -46,29 +46,27 @@ def CrearGrupoDeWhatsapp(groupName,grupo,horario,siglaMateria,turno,modalidad,ma
     nameField.send_keys(groupName + Keys.ENTER)
 
 
-    x_AvisoDeBloqueo = '//*[@id="app"]/div[1]/span[1]/div/div/span'
-    AvisoDeBloqueo = wait.until(ec.presence_of_element_located((By.XPATH,x_AvisoDeBloqueo)))
+    # x_AvisoDeBloqueo = '//*[@id="app"]/div[1]/span[1]/div/div/span'
+    # AvisoDeBloqueo = wait.until(ec.presence_of_element_located((By.XPATH,x_AvisoDeBloqueo)))
     
-    time.sleep(1.5)
-    textoDeAviso = str(AvisoDeBloqueo.get_attribute("textContent"))
+    # # time.sleep(1.5)
+    # # textoDeAviso = str(AvisoDeBloqueo.get_attribute("textContent"))
 
-    if(textoDeAviso == "No se pudo crear el grupo. Creaste demasiados grupos en muy poco tiempo. Vuelve a intentarlo más tarde."):
+    # # if(textoDeAviso == "No se pudo crear el grupo. Creaste demasiados grupos en muy poco tiempo. Vuelve a intentarlo más tarde."):
         
-        print("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
-        print("AVISO DE WHATSAPP    "+textoDeAviso,"\n")
-        print("Se detuvo en: \n Materia:", materia ,"_",grupo,"\n Con el contador a:", contador,"\n")
-        print("Nos bloquearon a la siguiente fecha y hora: "+ time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),"\n")
-        sys.exit("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
+    # #     print("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
+    # #     print("AVISO DE WHATSAPP    "+textoDeAviso,"\n")
+    # #     print("Se detuvo en: \n Materia:", materia ,"_",grupo,"\n Con el contador a:", contador,"\n")
+    # #     print("Nos bloquearon a la siguiente fecha y hora: "+ time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),"\n")
+    # #     sys.exit("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
         
 
-
-    time.sleep(10)
+    time.sleep(5)
 
     #Aqui empieza a enviar el enlace del grupo
-
     x_nameFieldGroup = '//*[@id="side"]/div[1]/div/label/div/div[2]'
     nameFieldGroup = wait.until(ec.presence_of_element_located((By.XPATH,x_nameFieldGroup)))
-    nameFieldGroup.send_keys(groupName)
+    nameFieldGroup.send_keys(groupName + Keys.ENTER)
     chrome.implicitly_wait(20) # da una espera implícita de 20 segundos
     x_encontrarElemento = '//*[@id="pane-side"]/div[1]/div/div/div[9]/div/div/div/div[2]/div[1]/div[1]/span'
     x_encontrarElemento.__getattribute__("title")
