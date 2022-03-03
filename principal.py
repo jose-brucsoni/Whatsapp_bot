@@ -15,13 +15,13 @@ class principal:
     chrome = webdriver.Chrome(executable_path='./chromedriver')
 
     wait = WebDriverWait(chrome,600)
-
+    chrome.implicitly_wait(20) # da una espera implícita de 20 segundos
 
     chrome.get('https://web.whatsapp.com/')
 
     contador = -1
 
-    (arregloNombres,arregloGrupo,arregloHorario,arregloSiglaMateria,arregloTurno,arregloModalidad,arregloMateriaSinAbreviar) = extraerDatosDelExcel()
+    (arregloNombres,arregloGrupo,arregloHorario,arregloSiglaMateria,arregloTurno,arregloModalidad,arregloMateriaSinAbreviar,arregloFilasDeExcel) = extraerDatosDelExcel()
 
 
     for i in arregloNombres:
@@ -36,13 +36,14 @@ class principal:
         turno = arregloTurno[contador]
         modalidad = arregloModalidad[contador]
         materiaSinAbreviar = arregloMateriaSinAbreviar[contador]
+        filaDeExcelAinsertar = arregloFilasDeExcel[contador]
         #CreandoGrupo
         obtenerEnlace = CrearGrupoDeWhatsapp(str(nombreDelGrupo),str(grupo),str(horario),str(siglaMateria),str(turno),str(modalidad),str(materiaSinAbreviar),wait,chrome,contador)
         time.sleep(1)
 
 
         #insertar enlace y nombre a excel
-        insertarDatosDelExcel(nombreDelGrupo,obtenerEnlace,contador)
+        insertarDatosDelExcel(nombreDelGrupo,obtenerEnlace,filaDeExcelAinsertar)
         time.sleep(5)
 
         

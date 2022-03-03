@@ -29,7 +29,7 @@ def CrearGrupoDeWhatsapp(groupName,grupo,horario,siglaMateria,turno,modalidad,ma
     #Ingresa nombre en el 'TextBox' de buscar contactos
     x_name = '//*[@id="app"]/div[1]/div[1]/div[2]/div[1]/span/div[1]/span/div[1]/div/div[1]/div/div/input'
     nameField = wait.until(ec.presence_of_element_located((By.XPATH,x_name)))
-    nameField.send_keys('a_Yo') #Ingresar el nombre del contacto
+    nameField.send_keys('Joel Godoy') #Ingresar el nombre del contacto
     nameField.send_keys(Keys.ENTER)
 
 
@@ -56,7 +56,7 @@ def CrearGrupoDeWhatsapp(groupName,grupo,horario,siglaMateria,turno,modalidad,ma
         
         print("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
         print("AVISO DE WHATSAPP    "+textoDeAviso,"\n")
-        print("Se detuvo en: \n Materia:", materia ,"\n Con el contador a:", contador,"\n")
+        print("Se detuvo en: \n Materia:", materia ,"_",grupo,"\n Con el contador a:", contador,"\n")
         print("Nos bloquearon a la siguiente fecha y hora: "+ time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),"\n")
         sys.exit("********************************************---NOS BLOQUEO WHATSAPP---********************************************\n")
         
@@ -143,8 +143,6 @@ def CrearGrupoDeWhatsapp(groupName,grupo,horario,siglaMateria,turno,modalidad,ma
     textBoxDeChat.send_keys(Keys.ENTER)
 
     print("CONTEO DE PROCESOS = ",contador)
-    print("Materia = ", materia)
-    print("Grupo = ", grupo)
-    print("NombreAbreviado = ", groupName)
+    print("Materia = ", materia,"_",grupo)
 
     return retornarlink
