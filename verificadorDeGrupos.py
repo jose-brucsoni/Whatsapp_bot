@@ -19,11 +19,11 @@ chrome.implicitly_wait(20) # da una espera implícita de 20 segundos
 
 
 #Se Carga el archivo Excel
-excel = load_workbook('modulo2.xlsx')
+excel = load_workbook('modulo3_enlaces_actualizado.xlsx')
 #Selecciona la hoja dentro del excel
-ws = excel['modulo2']
+ws = excel['modulo3 - Filtrado']
 #Selecciona el rango de la tabla
-cell_range = ws['A2':'R500']
+cell_range = ws['A2':'Z500']
 
 
 contador = -1
@@ -32,10 +32,10 @@ for i in cell_range:
 
         contador += 1
 
-        if(cell_range[contador][11].value != None and cell_range[contador][12].value != None):
+        if(cell_range[contador][18].value != None and cell_range[contador][19].value != None):
 
-            enlace = str(cell_range[contador][11].value)
-            nombreDeGrupo = str(cell_range[contador][12].value)
+            enlace = str(cell_range[contador][18].value)
+            nombreDeGrupo = str(cell_range[contador][19].value)
             chrome.get(enlace)
             
             
@@ -45,22 +45,22 @@ for i in cell_range:
 
             if(retornarnombreDegrupo == nombreDeGrupo):
 
-                cell_range[contador][15].value = "Verificado"
+                cell_range[contador][21].value = "Verificado"
+                print("Verificado----->",nombreDeGrupo)
 
             elif(retornarnombreDegrupo != nombreDeGrupo):
                 
-                cell_range[contador][15].value = "NO COINCIDE"
-                cell_range[contador][16].value = retornarnombreDegrupo
-            else:
-                cell_range[contador][15].value = "Else"
-                print("Else")
+                cell_range[contador][21].value = "NO COINCIDE"
+                cell_range[contador][22].value = retornarnombreDegrupo
+                print("NO COINCIDE----->",retornarnombreDegrupo,"<-----No es igual a---> ",nombreDeGrupo)
 
-        elif(cell_range[contador][3].value != None):
-            cell_range[contador][15].value = "Crear Grupo"
+            else:
+                cell_range[contador][21].value = "ERROR"
+                print("ERROR")
 
 
 chrome.close()
-excel.save('modulo2.xlsx')
+excel.save('modulo3_enlaces_actualizado.xlsx')
 
 
 

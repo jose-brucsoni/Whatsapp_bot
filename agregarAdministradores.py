@@ -9,193 +9,151 @@ from datetime import datetime
 from openpyxl  import Workbook
 from openpyxl import load_workbook
 from remove import remove
+import sesion as keepSession
 
-#----------------------------------------------------------------------
-#Este proyecto convierte en administrador al contacto ya estando presente en el grupo, si ya es administrador el docente procedera a cerrarse y volver a comenzar el ciclo, tambien si hay 2 contactos registrado en el grupo el sistema retornara que "hay 2 docentes en el grupo"
-#NOTA: Le falta que agregue los avisos en el excel
+with open('./resource/session.log','r') as f:
+    sesion=f.read().split(',')
+    id=sesion[0]
+    url=sesion[1]
+    print(id+url)
+chrome = keepSession.openSession(id,url)
+driver = WebDriverWait(chrome,600)
 
+groupName = "SIMULACION.NEGOCIOS_FA"
 
-#Esto de aqui esta en espera de codigo para escribir lo que realize en el excel, por ejemplo: si ya tiene admins, si hay 2 docentes en el grupo o tambien sino tiene ningun docente registrado...
-#Se Carga el archivo Excel
-excel = load_workbook('numerosDocentes.xlsx')
-#Selecciona la hoja dentro del excel
-ws = excel['Hoja1']
-#Selecciona el rango de la tabla
-cell_range = ws['C4':'D200']
-
-
-#Se Carga el archivo Excel 2
-excel2 = load_workbook('modulo2.xlsx')
-#Selecciona la hoja dentro del excel 2
-ws2 = excel2['modulo2']
-#Selecciona el rango de la tabla 2
-cell_range2 = ws2['A2':'P500']
-
-chrome = webdriver.Edge(executable_path='./msedgedriver')
-
-wait = WebDriverWait(chrome,600)
-chrome.implicitly_wait(20) # da una espera implícita de 20 segundos
-
-chrome.get('https://web.whatsapp.com/')
-
-groupName = "Grupo Para Pruebas"
-
-time.sleep(2)
-
-
-#Carga el nombre del grupo al textboxs
 x_nameFieldGroup = '//*[@id="side"]/div[1]/div/label/div/div[2]'
-nameFieldGroup = wait.until(ec.presence_of_element_located((By.XPATH,x_nameFieldGroup)))
-nameFieldGroup.send_keys(groupName + Keys.ENTER)
-chrome.implicitly_wait(20) # da una espera implícita de 20 segundos
-x_encontrarElemento = '//*[@id="pane-side"]/div[1]/div/div/div[9]/div/div/div/div[2]/div[1]/div[1]/span'
-x_encontrarElemento.__getattribute__("title")
-time.sleep(2)
+nameFieldGroup = driver.until(ec.presence_of_element_located((By.XPATH,x_nameFieldGroup)))
+nameFieldGroup.clear()
+chrome.implicitly_wait(10) # da una espera implícita de 10 segundos
+nameFieldGroup.send_keys(groupName)
+time.sleep(1)
+nameFieldGroup.send_keys(Keys.ENTER)
 
-buscarGrupo.buscarGrupoEntextBox(x_encontrarElemento,groupName,nameFieldGroup,wait)
-time.sleep(2)
 
 #Click a Boton De 3 puntos
 x_threePointsButton = '//*[@id="main"]/header/div[3]/div/div[2]/div/div'
-buttonthreePoints = wait.until(ec.presence_of_element_located((By.XPATH,x_threePointsButton)))
+buttonthreePoints = driver.until(ec.presence_of_element_located((By.XPATH,x_threePointsButton)))
 buttonthreePoints.click()
-time.sleep(2)
+
+time.sleep(1)
 
 #Click en Info Grupo
 x_InfoGrupoButton = '//*[@id="app"]/div[1]/span[4]/div/ul/div/div/li[1]'
-buttonInfoGrupo = wait.until(ec.presence_of_element_located((By.XPATH,x_InfoGrupoButton)))
+buttonInfoGrupo = driver.until(ec.presence_of_element_located((By.XPATH,x_InfoGrupoButton)))
 buttonInfoGrupo.click()
 
-time.sleep(2)
-
-#Click Lupa para buscar participante
-x_lupaBuscarParticipante = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div[1]/div/div/div[2]/span'
-lupaBuscarParticipante = wait.until(ec.presence_of_element_located((By.XPATH,x_lupaBuscarParticipante)))
-lupaBuscarParticipante.click()
-
-time.sleep(5)
+time.sleep(1)
 
 
-try:
+#Click integrantes
+x_integrantesButton = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div[1]/div/div/div[1]'
+buttonintegrantes = driver.until(ec.presence_of_element_located((By.XPATH,x_integrantesButton)))
+buttonintegrantes.click()
 
+time.sleep(3)
+
+celdaDeUsuario = './/div[@class="_3m_Xw"]//div[div[div[div[div[span[@data-testid="default-user"]]]]] and div[div[div[span[span[@title]]]]]]'
+                    
+# pscroll = chrome.find_element_by_xpath('//div[@class="nne8e"]//div[@class="_3Bc7H KPJpj"]')
+# print("LLEGO AQUI")
+# heightY = chrome.execute_script("return arguments[0].scrollHeight;",pscroll)
+# print("hola horror0")
+# for i in range (0,int((heightY/72)/17)+1):
+#     print("hola horror")
+#     busquedacelda=pscroll.find_elements_by_xpath('.//div[@class="_3m_Xw"]')
+#     encontrado=False
+#     busquedanombre='+'
+#     for oso in busquedacelda:
+#         try:
+#             print("hola error")
+#             busquedanombre= oso.find_element_by_xpath('.//div[div[div[div[div[span[@data-testid="default-user"]]]]] and div[div[div[span[span[@title]]]]]]//div[@class="zoWT4"]').get_attribute('textContent')
+#         except:
+#             print("espacio en blanco")
+#         if (busquedanombre[0] != '+') or (busquedanombre!='Celular 2') or (busquedanombre!='Tú'):
+#             print(str(busquedanombre))
+#             print ("se encontro a docente")
+#             oso.click()
+#             admin=driver.until(ec.presence_of_element_located((By.XPATH,'//*[@id="app"]/div[1]/span[4]/div/ul/div/li[1]/div[1]')))
+#             admin.click()
+#             cerrarVentanaDeIntegrantes=driver.until(ec.presence_of_element_located((By.XPATH,'//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span')))
+#             cerrarVentanaDeIntegrantes.click()
+#             #---------------------------------------------------------------------------------------
+#             #Click en Salir del grupo
+#             x_botonParaSalirDelGrupo = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[7]/div[1]/div[2]/div/span'
+#             botonParaSalirDelGrupo = driver.until(ec.presence_of_element_located((By.XPATH,x_botonParaSalirDelGrupo)))
+#             botonParaSalirDelGrupo.click()
+
+#             time.sleep(2)
+
+#             #Click en confirmar salida
+#             x_botonParaConfirmarSalidaDelGrupo = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div/div[2]/div/div'
+#             botonParaConfirmarSalidaDelGrupo = driver.until(ec.presence_of_element_located((By.XPATH,x_botonParaConfirmarSalidaDelGrupo)))
+#             botonParaConfirmarSalidaDelGrupo.click()
+
+#             time.sleep(4)
+
+#             #Aqui empieza a Buscar el grupo
+#             x_nameFieldGroup = '//*[@id="side"]/div[1]/div/label/div/div[2]'
+#             nameFieldGroup = driver.until(ec.presence_of_element_located((By.XPATH,x_nameFieldGroup)))
+#             nameFieldGroup.clear()
+#             nameFieldGroup.send_keys(groupName)
+#             nameFieldGroup.send_keys(Keys.ENTER)
+#             #Click a Boton De 3 puntos
+#             x_threePointsButton = '//*[@id="main"]/header/div[3]/div/div[2]/div/div'
+#             buttonthreePoints = driver.until(ec.presence_of_element_located((By.XPATH,x_threePointsButton)))
+#             buttonthreePoints.click()
+
+#             time.sleep(2)
+
+#             #Click en Info Grupo
+#             x_InfoGrupoButton = '//*[@id="app"]/div[1]/span[4]/div/ul/div/div/li[1]'
+#             buttonInfoGrupo = driver.until(ec.presence_of_element_located((By.XPATH,x_InfoGrupoButton)))
+#             buttonInfoGrupo.click()
+#             time.sleep(2)
+
+#             #Click en Salir del grupo
+#             x_botonEliminarGrupo = '//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div[1]/div[2]/div/span'
+#             botonEliminarGrupo = driver.until(ec.presence_of_element_located((By.XPATH,x_botonEliminarGrupo)))
+#             botonEliminarGrupo.click()
+#             time.sleep(2)
+
+#             #Click  confirmar en Salir del grupo
+#             x_botonConfirmarEliminacionDeGrupo = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div[2]'
+#             botonConfirmarEliminacionDeGrupo = driver.until(ec.presence_of_element_located((By.XPATH,x_botonConfirmarEliminacionDeGrupo)))
+#             botonConfirmarEliminacionDeGrupo.click()
+
+#             #Confirma el guardado de los datos en Excel
+            
+#             print("El GRUPO: '", groupName,"', SE PUDO BORRAR")
+#             encontrado=True
+#             break
+#     if encontrado == True:
+#         break
+#         # chrome.execute_script("arguments[0].scroll(0,arguments[1]);",pscroll,(i*1224))
+#         # print("Aca termino")
+#         # #driver.execute_script("arguments[0].scrollIntoView();",panel,)
+#     cont=i*1224
+#     chrome.execute_script("arguments[0].scroll(0,arguments[1]);",pscroll,cont)
+print("hola")
+pscroll = driver.until(ec.presence_of_element_located((By.XPATH,'//div[@class="nne8e"]//div[@class="_3Bc7H KPJpj"]')))
+userlist = pscroll.find_element_by_xpath('.//div[@class="_3uIPm WYyr1" and @style]')
+sizelist = chrome.execute_script("return arguments[0].scrollHeight;",userlist)
+sizelist = int(sizelist/72)
+for reco in range (0,sizelist):
+    reco = reco*72
     try:
-        x_VerificarSiEsAdmin = chrome.find_element_by_xpath('//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[4]/div/div/div[2]/div[1]/div[2]')
-        verificarSiEsAdmin = str(x_VerificarSiEsAdmin.get_attribute("textContent"))
-
-        x_nombreDecontacto_1 = chrome.find_element_by_xpath('//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[4]/div/div/div[2]/div[1]/div/span')
-        nombreDecontacto_1 = str(x_nombreDecontacto_1.get_attribute("textContent"))
-
-        x_nombreDecontacto_2 = chrome.find_element_by_xpath('//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[3]/div/div/div[2]/div[1]/div/span')
-        nombreDecontacto_2 = str(x_nombreDecontacto_2.get_attribute("textContent"))
-
-        print(verificarSiEsAdmin,nombreDecontacto_1[0],nombreDecontacto_2[0],"-----------------------------------------")
-
-        if(nombreDecontacto_1[0] != "+" and nombreDecontacto_2[0] == "+"):
-
-            if(verificarSiEsAdmin != "Admin. del grupo" or verificarSiEsAdmin == None or verificarSiEsAdmin == ""):
-
-                print("hay Conocidos---------------------------------")
-                #click en el contacto, en el primero
-                x_clickEnContacto = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[4]/div/div'
-                clickEnContacto = wait.until(ec.presence_of_element_located((By.XPATH,x_clickEnContacto)))
-                clickEnContacto.click()
-
-
-                #Click en "Designar como admin del grupo"
-                x_buttonDesignarAdministrador = '//*[@id="app"]/div[1]/span[4]/div/ul/div/li[1]/div[1]'
-                buttonDesignarAdministrador = wait.until(ec.presence_of_element_located((By.XPATH,x_buttonDesignarAdministrador)))
-                buttonDesignarAdministrador.click()
-
-
-                #Salir de la ventana participantes
-                x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-                salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-                salirDelaVentanaParticipantes.click()
-
-            elif(verificarSiEsAdmin == "Admin. del grupo"):
-
-                print("El Grupo: ", groupName, ", ya tiene administrador")
-                #Salir de la ventana participantes
-                x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-                salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-                salirDelaVentanaParticipantes.click()
-
-        elif(nombreDecontacto_1[0] != "+" and nombreDecontacto_2[0] != "+"):
-
-            print("----------------El Grupo: ", groupName, ", contiene 2 docentes-------------")
-            #Salir de la ventana participantes
-            x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-            salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-            salirDelaVentanaParticipantes.click()
-
-        else:
-            print("----------------El Grupo: ", groupName, ", NO TIENE NINGUN NUMERO REGISTRADO")
-            #Salir de la ventana participantes
-            x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-            salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-            salirDelaVentanaParticipantes.click()
-
-
-
+        print(reco)
+        recoUserEle=userlist.find_element_by_xpath(f'.//div[@class="_3m_Xw" and contains(@style,"translateY({reco}px)")]')
+        contUser= recoUserEle.find_element_by_xpath('.//div[div[div[div[div[span[@data-testid="default-user"]]]]] and div[div[div[span[@title]]]]]')
+        nombreUser=contUser.find_element_by_xpath('.//span[@dir and @title and @class="ggj6brxn gfz4du6o r7fjleex g0rxnol2 lhj4utae le5p0ye3 l7jjieqr i0jNr"]')
+        nombreUser=nombreUser.get_attribute("textContent")
     except:
-        verificarSiEsAdmin = None
-        x_nombreDecontacto_1 = chrome.find_element_by_xpath('//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[4]/div/div/div[2]/div[1]/div/span')
-        nombreDecontacto_1 = str(x_nombreDecontacto_1.get_attribute("textContent"))
-
-        x_nombreDecontacto_2 = chrome.find_element_by_xpath('//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[3]/div/div/div[2]/div[1]/div/span')
-        nombreDecontacto_2 = str(x_nombreDecontacto_2.get_attribute("textContent"))
-
-        print(verificarSiEsAdmin,nombreDecontacto_1[0],nombreDecontacto_2[0],"-----------------2------------------------")
-
-        if(nombreDecontacto_1[0] != "+" and nombreDecontacto_2[0] == "+"):
-
-            if(verificarSiEsAdmin != "Admin. del grupo" or verificarSiEsAdmin == None or verificarSiEsAdmin == ""):
-
-                print("hay Conocidos---------------------------------")
-                #click en el contacto, en el primero
-                x_clickEnContacto = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/div[2]/div/div/div/div[4]/div/div'
-                clickEnContacto = wait.until(ec.presence_of_element_located((By.XPATH,x_clickEnContacto)))
-                clickEnContacto.click()
-
-
-                #Click en "Designar como admin del grupo"
-                x_buttonDesignarAdministrador = '//*[@id="app"]/div[1]/span[4]/div/ul/div/li[1]/div[1]'
-                buttonDesignarAdministrador = wait.until(ec.presence_of_element_located((By.XPATH,x_buttonDesignarAdministrador)))
-                buttonDesignarAdministrador.click()
-
-
-                #Salir de la ventana participantes
-                x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-                salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-                salirDelaVentanaParticipantes.click()
-
-            elif(verificarSiEsAdmin == "Admin. del grupo"):
-
-                print("El Grupo: ", groupName, ", ya tiene administrador")
-                #Salir de la ventana participantes
-                x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-                salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-                salirDelaVentanaParticipantes.click()
-
-        elif(nombreDecontacto_1[0] != "+" and nombreDecontacto_2[0] != "+"):
-
-            print("----------------El Grupo: ", groupName, ", contiene 2 docentes-------------")
-            #Salir de la ventana participantes
-            x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-            salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-            salirDelaVentanaParticipantes.click()
-
-        else:
-            print("----------------El Grupo: ", groupName, ", NO TIENE NINGUN NUMERO REGISTRADO")
-            #Salir de la ventana participantes
-            x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-            salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-            salirDelaVentanaParticipantes.click()
-
-
-except:
-
-    #Salir de la ventana participantes
-    x_salirDelaVentanaParticipantes = '//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div/header/div/div[1]/button/span'
-    salirDelaVentanaParticipantes = wait.until(ec.presence_of_element_located((By.XPATH,x_salirDelaVentanaParticipantes)))
-    salirDelaVentanaParticipantes.click()
+        print("Contenedor vacio")
+    else:
+        if ("+" not in nombreUser) or ("Celular 2" not in nombreUser):
+            print ("Docente encontrado:")
+            print (nombreUser)
+            break
+        print("Buscando...." + nombreUser)
+    finally:
+        chrome.execute_script("arguments[0].scroll(0,arguments[1]);",pscroll,reco)
