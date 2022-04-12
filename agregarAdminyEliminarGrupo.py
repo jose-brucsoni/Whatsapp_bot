@@ -63,11 +63,11 @@ for i in cell_range:
                 if(textoResultadoDeBusqueda == "No se encontró ningún chat, contacto ni mensaje"):
 
                     print("NO SE ENCONTRO NINGUN GRUPO CON EL NOMBRE DE => ", groupName)
-                    cell_range[contador][27].value = "NO ENCONTRADO"
+                    cell_range[contador][27].value = "ASIGNADO"
                     excel.save('modulo3_enlaces_actualizado.xlsx')
                 else:
                     try:
-                        x_extraeLaTextoDeSalirDelGrupo = driver.find_element(By.XPATH,'//*[@id="main"]/footer')
+                        x_extraeLaTextoDeSalirDelGrupo = driver.find_element(By.XPATH,'//*[@id="main"]/footer/div')
                         x_extraeLaTextoDeSalirDelGrupo = x_extraeLaTextoDeSalirDelGrupo.get_attribute("textContent")
                         extraeLaTextoDeSalirDelGrupo = x_extraeLaTextoDeSalirDelGrupo.strip()
 
@@ -87,7 +87,7 @@ for i in cell_range:
                             
                             print("Ya Contiene Administrador")
                             print("El Grupo: ", groupName)
-                            cell_range[contador][27].value = "ELIMINADO"
+                            cell_range[contador][27].value = "ASIGNADO"
                             excel.save('modulo3_enlaces_actualizado.xlsx')
                         else:
                             agregarAdminyEliminarGrupo_tool(driver,chrome,groupName,cell_range,contador,excel,action)

@@ -66,7 +66,7 @@ def salirDelGrupo(driver, groupName):
 
         # Confirma el guardado de los datos en Excel
 
-        print("El GRUPO: '", groupName, "', BORRADO")
+        print("El GRUPO: '", groupName, "', ASIGNADO")
 
 
 def agregarAdminyEliminarGrupo_tool(driver, chrome, groupName, cell_range, contador, excel, action):
