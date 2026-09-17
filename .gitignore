@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+env/
+
+# Datos locales (usar las plantillas de examples/)
+*.xlsx
+!examples/*.xlsx
+
+# ChromeDriver local
+chromedriver
+chromedriver.exe
+
+# Sesiones y perfiles de Chrome / WhatsApp Web
+chrome-profile/
+Default/
+User Data/
+*.log
+
+# Secretos
+.env
+.env.*
